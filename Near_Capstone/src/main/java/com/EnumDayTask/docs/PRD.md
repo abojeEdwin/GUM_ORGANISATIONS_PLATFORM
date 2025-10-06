@@ -73,9 +73,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * invalid role -> 403 INVALID_ROLE
     * invalid program id -> 404 NOT_FOUND
     * invalid dates -> 422 VALIDATION_ERROR
-    * uploading invalid logo file type -> 400 INVALID_FILE_TYPE
-    * uploading profile multiple times -> always update and not duplicate    
-    * no profile set yet -> /org/me returns 0% completeness and all fields missing
     * accepting invite with existing email -> conflict
     * archiving already archived program -> error(idempotent)
     * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
@@ -119,19 +116,24 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * Refresh token rotation ensures reuse of old refresh fails
             * Logout always revokes active session
 
+
     - Profile
-        Feature: Upsert fields(logoUrl, description, industry, website)
+        Feature: Upsert fields(logoUrl, description, industry, website), completeness
         User Stories
             * As an Admin of the Org, I want to be able to update my profile so i can manage my org.
             * As an Admin of the Org , I want to be able to view my profile and see a completeness % and know the missing fields.
-        
-      
 
         Acceptance Criteria
             * Only one profile per organsation.
             * /org/me must return profile, completeness, + missing fields.
             * Only Admin can update profile.
             * Latest profile update overrides previous.
+
+        Edge Cases
+            * Submitting invalid website -> VALIDATION_ERROR.
+            * uploading invalid logo file type -> 400 INVALID_FILE_TYPE
+            * uploading profile multiple times -> always update and not duplicate    
+            * no profile set yet -> /org/me returns 0% completeness and all fields missing
 
     - RBAC
         Features :Roles(ADMIN,MANAGER,MEMBER)
