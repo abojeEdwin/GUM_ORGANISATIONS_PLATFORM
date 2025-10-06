@@ -190,7 +190,11 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * As a System, I want to be able to send emails so i can notify users.
         
         Edges Cases
-            * Every queued email either becomes sent or failed.
+            * If worker crashes mid-send -> status stays queued .
+            * Retry attempts should be counted
+
+        Acceptance Criteria
+            * Every queued email either either becomes sent or failed.
             * Worker must handle retires gracefully.
 
 
