@@ -1,14 +1,12 @@
 # 1.PRODUCT REQUIREMENT DOCUMENT 
-This PRD defines the requirements for the Authentication, Profile, Role Based Access Control (RBAC), Plans, Email Outbox, and Programs setup for Enum Organisation Platform.
+This PRD defines the requirements for the Authentication, Profile, Role Based Access Control (RBAC), Plans & Limits , Email Outbox, and Programs setup for Enum Organisation Platform.
 
 # Users & Roles
 - Admin
 - Manager
 - Member
-- System
 
 # Functional Requirements
-
 
 # - Authentication
     * Signup : signup with email and password -> pending verification, token generation
@@ -23,8 +21,8 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * /org/me must return profile, completeness, + missing fields.
 
 # - RBAC(Role Based Access Control)
-    * Admin : Creates Organisation ,Invite managers and Members, edit, and delete all users; manage billing and plans ; access to global settings/features.
-    * Manager : Can view members; create,update and manage programs; cannot change billing or plan, invited by Admin.
+    * Admin : Creates Organisation, Invite managers and Members, edit, and delete all users; manage billing and plans limit ; access to global settings/features.
+    * Manager : Can view members; can create,update and manage programs; cannot change billing or plan, invited by Admin.
     * Member : Read only access to programs; cannot invite others; invited by Admin or Manager.
     * System : Trigger scheduled operations; email worker, verify, send notification, health checks, metric collection; update statuses automatically.
 
@@ -67,17 +65,11 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     }
 
     Acceptance Criteria
-        * Error code must be standard format
+        * If an error happens the Error Code must be the standard format
         * Trace Id included in every error.
         * Message in plain English.
 
 # -Edge Cases and Expected Behavior
-    * signup with existing email -> 409 EMAIL_IN_USE
-    * signup with unverified email -> 202 RESENT_VERIFICATION_TOKEN
-    * invalid/expired/used token -> 400/410 TOKEN_INVALID/TOKEN_EXPIRED
-    * login before verification -> 403 EMAIL_NOT_VERIFIED
-    * wrong password -> 401 INVALID_CREDENTIALS
-    * rate limited -> 429 RATE_LIMITED
     * invalid role -> 403 INVALID_ROLE
     * invalid program id -> 404 NOT_FOUND
     * invalid dates -> 422 VALIDATION_ERROR
@@ -111,6 +103,15 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * As an Admin of the Org, I want to be able to signup and verify my email so i can create an organisation.
             * As an Admin of the Org, I want to log in and out securely so i can manage my org safely.
             * As a User, i want refresh tokens so i can stay logged in without re-entering credentials frequently.
+            
+        Edge Cases
+            * signup with existing email -> 409 EMAIL_IN_USE
+            * signup with unverified email -> 202 RESENT_VERIFICATION_TOKEN
+            * invalid/expired/used token -> 400/410 TOKEN_INVALID/TOKEN_EXPIRED
+            * login before verification -> 403 EMAIL_NOT_VERIFIED
+            * wrong password -> 401 INVALID_CREDENTIALS
+            * rate limited -> 429 RATE_LIMITED
+            * Logout Twice -> idempotent(no error)
 
         Acceptance Criteria
             * User cannot log in until verified
@@ -124,6 +125,8 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * As an Admin of the Org, I want to be able to update my profile so i can manage my org.
             * As an Admin of the Org , I want to be able to view my profile and see a completeness % and know the missing fields.
         
+      
+
         Acceptance Criteria
             * Only one profile per organsation.
             * /org/me must return profile, completeness, + missing fields.
