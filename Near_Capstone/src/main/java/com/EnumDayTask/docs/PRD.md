@@ -78,6 +78,11 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * uploading invalid logo file type -> 400 INVALID_FILE_TYPE
     * uploading profile multiple times -> always update and not duplicate    
     * no profile set yet -> /org/me returns 0% completeness and all fields missing
+    * accepting invite with existing email -> conflict
+    * archiving already archived program -> error(idempotent)
+    * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
+
+
 
 # Error Code Catalogue
     * EMAIL_IN_USE
@@ -92,7 +97,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * INVALID_CREDENTIALS
     * NOT_AUTHENTICATED
     * TOKEN_ALREADY_USED
-
+    * 
 # User Stories By Feature
     - Authentication
         Feature : Signup, Verify, Login, Logout, Refresh Token
@@ -128,13 +133,42 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             
         
         Acceptance Criteria
-            * Only Admin can invite members.
+            * Only Admin can invite members and managers.
             * Only Admin and Manager can create programs.
             * Only Admin and Manager can update programs.
             * Only Admin can archive programs.
-            * Only Admin can view programs.
+            * Accepting invite activates user under correct role.
             * Only Admin can manage billing and plans.  
+
+    - Programs
+        Features: Create, Update, List, Archive , Filter by status,
+        User Stories
+            * As an Admin or Manager, I want to be able to create programs so i can run org initiatives.
+            * As a Member, I want to be able to view programs so i can stay updated.
+            * As an Admin, I want to be able to archive programs so i can keep things tidy.
+        
+        Acceptance Criteria
+            * Programs can be created , updated and archived.
+            * Query filters can be applied to list programs.
+            * Error shown clearly if limits or validation errors occur.
+
+    - Plans & Limits
+        Feature: Free, Pro, Enterprise
+        > Free : 5 members, 3 programs
+        > Pro : 50 members, 20 programs
+        > Enterprise : Unlimited members, Unlimited programs
+        User Stories
+            * As an Admin, I want to know my plan limits so i can know when to upgrade.
     
+        - Acceptance Criteria
+            * Limits are enforced on member adding and program creation.
+            * Response includes actionable error message if limits are exceeded.
+
+    
+    Email Outbox
+        Feature: Queue messages into DB table, email worker simulates sending emails, retries supported.
+        User Stories
+            * As a System, I want to be able to send emails so i can notify users.
 - Plans
 - Email Outbox
 - Programs
