@@ -74,13 +74,20 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * rate limited -> 429 RATE_LIMITED
     * invalid role -> 403 INVALID_ROLE
     * invalid program id -> 404 NOT_FOUND
-    * invalid program status -> 400 INVALID_STATUS
-    * invalid program start date -> 400 INVALID_START_DATE
-    * invalid program end date -> 400 INVALID_END_DATE
-    * invalid program title -> 400 INVALID_TITLE
-    * invalid program description -> 400 INVALID_DESCRIPTION
-    * invalid program members -> 400 INVALID_MEMBERS
+    * invalid dates -> 422 VALIDATION_ERROR
 
+# Error Code Catalogue
+    * EMAIL_IN_USE
+    * EMAIL_NOT_VERIFIED
+    * TOKEN_INVALID
+    * TOKEN_EXPIRED
+    * RATE_LIMITED
+    * INVALID_ROLE
+    * NOT_FOUND
+    * VALIDATION_ERROR
+    * RESENT_VERIFICATION_TOKEN
+    * INVALID_CREDENTIALS
+    * NOT_AUTHENTICATED
 
 - Plans
 - Email Outbox
