@@ -142,11 +142,15 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * As a Manager, I want to be manage programs so i can run org initiatives.
             * As a Member, I want to be able to view/read and not write programs so i can stay updated.
 
+        Edge Cases
+            * Invite token invalid/expired -> 400/410 TOKEN_INVALID/TOKEN_EXPIRED.
+            * 
+            
+
         Acceptance Criteria
             * Only Admin can invite members and managers.
             * Only Admin and Manager can create programs.
             * Only Admin and Manager can update programs.
-            * Only Admin can archive programs.
             * Accepting invite activates user under correct role.
             * Only Admin can manage billing and plans.  
 
