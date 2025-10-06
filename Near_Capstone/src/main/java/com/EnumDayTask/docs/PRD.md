@@ -34,6 +34,12 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * Archive Program : only by Admin.
     * List Programs : paginated list with filters (status, query).
 
+
+# -Plans & Limits
+    * Free : 5 members, 3 programs
+    * Pro : 50 members, 20 programs
+    * Enterprise : Unlimited members, Unlimited programs
+
 # -Endpoints(Minimum)
     * POST /v1/auth/signup : Signup
     * GET  /v1/auth/verify?token= : Verify email
@@ -57,6 +63,24 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             "trace_id": "req_123"
         }
     }
+
+
+# -Edge Cases and Expected Behavior
+    * signup with existing email -> 409 EMAIL_IN_USE
+    * signup with unverified email -> 202 RESENT_VERIFICATION_TOKEN
+    * invalid/expired/used token -> 400/410 TOKEN_INVALID/TOKEN_EXPIRED
+    * login before verification -> 403 EMAIL_NOT_VERIFIED
+    * wrong password -> 401 INVALID_CREDENTIALS
+    * rate limited -> 429 RATE_LIMITED
+    * invalid role -> 403 INVALID_ROLE
+    * invalid program id -> 404 NOT_FOUND
+    * invalid program status -> 400 INVALID_STATUS
+    * invalid program start date -> 400 INVALID_START_DATE
+    * invalid program end date -> 400 INVALID_END_DATE
+    * invalid program title -> 400 INVALID_TITLE
+    * invalid program description -> 400 INVALID_DESCRIPTION
+    * invalid program members -> 400 INVALID_MEMBERS
+
 
 - Plans
 - Email Outbox
