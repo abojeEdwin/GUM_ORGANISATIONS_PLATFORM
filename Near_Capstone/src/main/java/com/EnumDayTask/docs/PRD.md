@@ -64,6 +64,10 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         }
     }
 
+    Acceptance Criteria
+        * Error code must be standard format
+        * Trace Id included in every error.
+        * Message in plain English.
 
 # -Edge Cases and Expected Behavior
     * signup with existing email -> 409 EMAIL_IN_USE
@@ -83,7 +87,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
 
 
-
 # Error Code Catalogue
     * EMAIL_IN_USE
     * EMAIL_NOT_VERIFIED
@@ -97,7 +100,8 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * INVALID_CREDENTIALS
     * NOT_AUTHENTICATED
     * TOKEN_ALREADY_USED
-    * 
+    
+
 # User Stories By Feature
     - Authentication
         Feature : Signup, Verify, Login, Logout, Refresh Token
