@@ -69,13 +69,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         * Trace Id included in every error.
         * Message in plain English.
 
-# -Edge Cases and Expected Behavior
-    * invalid role -> 403 INVALID_ROLE
-    * invalid program id -> 404 NOT_FOUND
-    * invalid dates -> 422 VALIDATION_ERROR
-   
-
-
 # Error Code Catalogue
     * EMAIL_IN_USE
     * EMAIL_NOT_VERIFIED
@@ -167,6 +160,10 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         Edge Cases
             * archiving already archived program -> error(idempotent)
             * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
+            * invalid dates -> 422 VALIDATION_ERROR
+
+
+
 
     - Plans & Limits
         Feature: Free, Pro, Enterprise
@@ -180,6 +177,12 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         - Acceptance Criteria
             * Limits are enforced on member adding and program creation.
             * Response includes actionable error message if limits are exceeded.
+        
+        Edge Cases
+            * Attempt to exceed limits -> error LIMIT_EXCEEDED.
+            * Downgrading plan when usage exceeds limits -> must block limit untill reduced.
+
+
 
     Email Outbox
         Feature: Queue messages into DB table, email worker simulates sending emails, retries supported.
@@ -189,6 +192,9 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         Edges Cases
             * Every queued email either becomes sent or failed.
             * Worker must handle retires gracefully.
+
+
+
 
     Health & Metrics
         Feature: Health checks( /.well-known/health: {status, db, redis} ), /metrics
