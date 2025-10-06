@@ -169,6 +169,22 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         Feature: Queue messages into DB table, email worker simulates sending emails, retries supported.
         User Stories
             * As a System, I want to be able to send emails so i can notify users.
+        
+        Edges Cases
+            * Every queued email either becomes sent or failed.
+            * Worker must handle retires gracefully.
+
+        
+
+    Health & Metrics
+        Feature: Health checks( /.well-known/health: {status, db, redis} ), /metrics
+        User Stories
+            * As a Developer, i want healthcheck and metrics so  i can monitor the system.
+        Acceptance Criteria
+            * Health checks must always reflects dependecies.
+            * Metrics must be available at /metrics
+        
+
 - Plans
 - Email Outbox
 - Programs
