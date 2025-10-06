@@ -1,5 +1,5 @@
 # 1.PRODUCT REQUIREMENT DOCUMENT 
-This PRD defines the requirements for the Authentication, Profile, Role Based Access Control (RBAC), Plans, Email Outbox, and Programs setup for Gum Organisation Platform.
+This PRD defines the requirements for the Authentication, Profile, Role Based Access Control (RBAC), Plans, Email Outbox, and Programs setup for Enum Organisation Platform.
 
 # Users & Roles
 - Admin
@@ -16,14 +16,14 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * Logout : revokes current session 
 
 # - Profile
-    * Fields : description, logo, industry, website.
+    * Admin (Organisation)  : description, logo, industry, website.
     * Completeness calculation : 0%, 20%, 60%, 80%, 100%
 
 # - RBAC(Role Based Access Control)
-    * Admin : Create, edit, and delete all users; view all reports; configure global settings.
-    * Manager : Manage members; approve/reject tasks; view members performance.
-    * Member : Create and manage own content; view limited data; request approvals.
-    * System : Trigger scheduled operations; email worker, verify; update statuses automatically.
+    * Admin : Invite managers and Members, edit, and delete all users; manage billing; access to global settings/features.
+    * Manager : Can view members; create,update and manage programs; cannot change billing or plan, invited by Admin.
+    * Member : Read only access to programs; cannot invite others; invited by Admin or Manager.
+    * System : Trigger scheduled operations; email worker, verify, send notification, health checks, metric collection; update statuses automatically.
 
 - Plans
 - Email Outbox
