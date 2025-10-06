@@ -9,6 +9,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
 
 # Functional Requirements
 
+
 # - Authentication
     * Signup : signup with email and password -> pending verification, token generation
     * Verify : token must be valid, single use, with expiry
@@ -39,6 +40,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * Free : 5 members, 3 programs
     * Pro : 50 members, 20 programs
     * Enterprise : Unlimited members, Unlimited programs
+
 
 # -Endpoints(Minimum)
     * POST /v1/auth/signup : Signup
@@ -134,8 +136,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * As an Admin, I want to be able to invitr members so my team can collaborate.
             * As a Manager, I want to be manage programs so i can run org initiatives.
             * As a Member, I want to be able to view/read and not write programs so i can stay updated.
-            
-        
+
         Acceptance Criteria
             * Only Admin can invite members and managers.
             * Only Admin and Manager can create programs.
@@ -161,6 +162,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         > Free : 5 members, 3 programs
         > Pro : 50 members, 20 programs
         > Enterprise : Unlimited members, Unlimited programs
+
         User Stories
             * As an Admin, I want to know my plan limits so i can know when to upgrade.
     
@@ -168,7 +170,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * Limits are enforced on member adding and program creation.
             * Response includes actionable error message if limits are exceeded.
 
-    
     Email Outbox
         Feature: Queue messages into DB table, email worker simulates sending emails, retries supported.
         User Stories
@@ -178,8 +179,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * Every queued email either becomes sent or failed.
             * Worker must handle retires gracefully.
 
-        
-
     Health & Metrics
         Feature: Health checks( /.well-known/health: {status, db, redis} ), /metrics
         User Stories
@@ -187,8 +186,3 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         Acceptance Criteria
             * Health checks must always reflects dependecies.
             * Metrics must be available at /metrics
-        
-
-- Plans
-- Email Outbox
-- Programs
