@@ -108,7 +108,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * Logout always revokes active session
 
 
-    - Profile
+    - Organisation Profile
         Feature: Upsert fields(logoUrl, description, industry, website), completeness
         User Stories
             * As an Admin of the Org, I want to be able to update my profile so i can manage my org.
@@ -196,7 +196,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
         Acceptance Criteria
             * Every queued email either either becomes sent or failed.
             * Worker must handle retires gracefully.
-
 
 
 
