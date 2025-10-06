@@ -73,7 +73,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * invalid role -> 403 INVALID_ROLE
     * invalid program id -> 404 NOT_FOUND
     * invalid dates -> 422 VALIDATION_ERROR
-    * accepting invite with existing email -> conflict
     * archiving already archived program -> error(idempotent)
     * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
 
@@ -144,8 +143,8 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
 
         Edge Cases
             * Invite token invalid/expired -> 400/410 TOKEN_INVALID/TOKEN_EXPIRED.
-            * 
-            
+            * Invite reuse after acceptance -> TOKEN_ALREADY_USED
+            * accepting invite with existing email -> conflict
 
         Acceptance Criteria
             * Only Admin can invite members and managers.
