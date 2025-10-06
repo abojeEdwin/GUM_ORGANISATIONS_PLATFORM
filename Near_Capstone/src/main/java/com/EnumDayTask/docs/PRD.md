@@ -73,8 +73,7 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * invalid role -> 403 INVALID_ROLE
     * invalid program id -> 404 NOT_FOUND
     * invalid dates -> 422 VALIDATION_ERROR
-    * archiving already archived program -> error(idempotent)
-    * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
+   
 
 
 # Error Code Catalogue
@@ -164,6 +163,10 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * Programs can be created , updated and archived.
             * Query filters can be applied to list programs.
             * Error shown clearly if limits or validation errors occur.
+
+        Edge Cases
+            * archiving already archived program -> error(idempotent)
+            * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
 
     - Plans & Limits
         Feature: Free, Pro, Enterprise
