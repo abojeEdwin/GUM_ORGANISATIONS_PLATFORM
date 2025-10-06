@@ -1,5 +1,5 @@
 # 1.PRODUCT REQUIREMENT DOCUMENT 
-This PRD defines the requirements for the Authentication, Profile, Role Based Access Control (RBAC), Plans & Limits , Email Outbox, and Programs setup for Enum Organisation Platform.
+This document defines the requirements for the Authentication, Profile, Role Based Access Control (RBAC), Plans & Limits , Email Outbox, and Programs setup for Enum Organisation Platform.
 
 # Users & Roles
 - Admin
@@ -161,7 +161,6 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
             * archiving already archived program -> error(idempotent)
             * creating program exceeding plan limit -> 403 LIMIT_EXCEEDED
             * invalid dates -> 422 VALIDATION_ERROR
-
 
 
 
