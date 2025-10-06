@@ -75,6 +75,9 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * invalid role -> 403 INVALID_ROLE
     * invalid program id -> 404 NOT_FOUND
     * invalid dates -> 422 VALIDATION_ERROR
+    * uploading invalid logo file type -> 400 INVALID_FILE_TYPE
+    * uploading profile multiple times -> always update and not duplicate    
+    * no profile set yet -> /org/me returns 0% completeness and all fields missing
 
 # Error Code Catalogue
     * EMAIL_IN_USE
@@ -88,7 +91,50 @@ This PRD defines the requirements for the Authentication, Profile, Role Based Ac
     * RESENT_VERIFICATION_TOKEN
     * INVALID_CREDENTIALS
     * NOT_AUTHENTICATED
+    * TOKEN_ALREADY_USED
 
+# User Stories By Feature
+    - Authentication
+        Feature : Signup, Verify, Login, Logout, Refresh Token
+        User Stories 
+            * As an Admin of the Org, I want to be able to signup and verify my email so i can create an organisation.
+            * As an Admin of the Org, I want to log in and out securely so i can manage my org safely.
+            * As a User, i want refresh tokens so i can stay logged in without re-entering credentials frequently.
+
+        Acceptance Criteria
+            * User cannot log in until verified
+            * Duplicate signup with unverified email resends token
+            * Refresh token rotation ensures reuse of old refresh fails
+            * Logout always revokes active session
+
+    - Profile
+        Feature: Upsert fields(logoUrl, description, industry, website)
+        User Stories
+            * As an Admin of the Org, I want to be able to update my profile so i can manage my org.
+            * As an Admin of the Org , I want to be able to view my profile and see a completeness % and know the missing fields.
+        
+        Acceptance Criteria
+            * Only one profile per organsation.
+            * /org/me must return profile, completeness, + missing fields.
+            * Only Admin can update profile.
+            * Latest profile update overrides previous.
+
+    - RBAC
+        Features :Roles(ADMIN,MANAGER,MEMBER)
+        User Stories
+            * As an Admin, I want to be able to invitr members so my team can collaborate.
+            * As a Manager, I want to be manage programs so i can run org initiatives.
+            * As a Member, I want to be able to view/read and not write programs so i can stay updated.
+            
+        
+        Acceptance Criteria
+            * Only Admin can invite members.
+            * Only Admin and Manager can create programs.
+            * Only Admin and Manager can update programs.
+            * Only Admin can archive programs.
+            * Only Admin can view programs.
+            * Only Admin can manage billing and plans.  
+    
 - Plans
 - Email Outbox
 - Programs
