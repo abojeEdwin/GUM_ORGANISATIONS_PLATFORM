@@ -22,9 +22,7 @@ public class Organisation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false)
     private String name;
-
     Plan_Limit planLimit;
 
     @OneToOne(mappedBy = "organisation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
