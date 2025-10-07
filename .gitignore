@@ -4,6 +4,8 @@ target/
 !**/src/test/**/target/
 .kotlin
 src/main/resources/application.properties
+src/main/resources/db/migrations/V1__.sql
+src/main/resources/db/read.me
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
