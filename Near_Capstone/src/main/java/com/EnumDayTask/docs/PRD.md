@@ -205,3 +205,7 @@ This document defines the requirements for the Authentication, Profile, Role Bas
         Acceptance Criteria
             * Health checks must always reflects dependecies.
             * Metrics must be available at /metrics
+        
+        Edge Cases
+            * DB down -> health shows db: not_ok.
+            Redis down -> health shows redis: not_ok
