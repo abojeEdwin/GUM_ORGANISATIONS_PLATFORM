@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class OrgAdmin implements UserDetails {
+public class Admin implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,10 +36,15 @@ public class OrgAdmin implements UserDetails {
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
-    private OrgAdminProfile adminProfile;
+    private OrganisationProfile adminProfile;
 
 
-    public void setAdminProfile(OrgAdminProfile adminProfile) {
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private Organisation organisation;
+
+
+    public void setAdminProfile(OrganisationProfile adminProfile) {
         if (adminProfile == null) {
             if (this.adminProfile != null) {
                 this.adminProfile.setAdmin(null);

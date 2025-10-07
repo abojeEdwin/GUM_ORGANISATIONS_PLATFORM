@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.sql.results.graph.Fetch;
 
 @Entity
 @AllArgsConstructor
@@ -15,7 +16,7 @@ import lombok.Setter;
 @Table(name = "Org_Admin_Profile")
 @Getter
 @Setter
-public class OrgAdminProfile {
+public class OrganisationProfile {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,7 +27,7 @@ public class OrgAdminProfile {
     @MapsId
     @JoinColumn(name = "id")
     @JsonBackReference
-    private OrgAdmin admin;
+    private Admin admin;
 
     private String logoUrl;
     private String description;
@@ -34,8 +35,17 @@ public class OrgAdminProfile {
     private String website;
     private ProfileCompleteness profileCompleteness;
 
-     public OrgAdminProfile(OrgAdmin admin) {
+     public OrganisationProfile(Admin admin) {
             this.admin = admin;
         this.profileCompleteness = ProfileCompleteness.ZERO;
     }
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
+    @JsonBackReference
+    private Organisation organisation;
+
+
+
 }
