@@ -5,6 +5,7 @@ This document defines the requirements for the Authentication, Profile, Role Bas
 - Admin
 - Manager
 - Member
+- System
 
 # Functional Requirements
 
@@ -21,7 +22,7 @@ This document defines the requirements for the Authentication, Profile, Role Bas
     * /org/me must return profile, completeness, + missing fields.
 
 # - RBAC(Role Based Access Control)
-    * Admin : Creates Organisation, Invite managers and Members, edit, and delete all users; manage billing and plans limit ; access to global settings/features.
+    * Admin : Creates Organisation, Invite managers and Members, can edit and delete all users; manage billing and plans limit ; access to global settings/features.
     * Manager : Can view members; can create,update and manage programs; cannot change billing or plan, invited by Admin.
     * Member : Read only access to programs; cannot invite others; invited by Admin or Manager.
     * System : Trigger scheduled operations; email worker, verify, send notification, health checks, metric collection; update statuses automatically.
