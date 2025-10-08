@@ -33,7 +33,7 @@ public class AuthController {
         return ResponseEntity.ok(adminAuthService.verifyEmail(token));
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/login")
     public ResponseEntity<AdminLoginRes> login (AdminLoginReq request){
         return ResponseEntity.ok(adminAuthService.login(request));
     }

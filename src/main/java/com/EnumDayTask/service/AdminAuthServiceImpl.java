@@ -79,7 +79,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
         Admin savedAdmin = adminRepo.save(admin);
 
         Organisation organisation = new Organisation(savedAdmin);
-        OrganisationProfile  profile = new OrganisationProfile(savedAdmin);
+        OrganisationProfileService profile = new OrganisationProfileService(savedAdmin);
         savedAdmin.setOrganisation(organisation);
         savedAdmin.setAdminProfile(profile);
         adminRepo.save(savedAdmin);
