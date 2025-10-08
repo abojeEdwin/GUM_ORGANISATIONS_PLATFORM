@@ -31,9 +31,7 @@ public class SecurityConfig {
                                 "/v1/auth/signup",
                                 "/v1/auth/login",
                                 "/v1/auth/logout",
-                                "/v1/auth/verify-email",
-                                "/v1/profile/talent",
-                                "v1/profile/me").permitAll()
+                                "/v1/auth/verify-email").permitAll()
                         .requestMatchers("/ws/**").permitAll()
                         .anyRequest().authenticated()
                 )
