@@ -1,6 +1,7 @@
 package com.EnumDayTask.service;
 
 import com.EnumDayTask.data.Enum.AdminStatus;
+import com.EnumDayTask.data.Enum.UserRole;
 import com.EnumDayTask.data.model.*;
 import com.EnumDayTask.data.repositories.AdminRepo;
 import com.EnumDayTask.data.repositories.BlackListedTokenRepo;
@@ -73,6 +74,7 @@ public class AdminAuthServiceImpl implements AdminAuthService {
         Admin admin = new Admin();
         admin.setEmail(request.getEmail());
         admin.setPassword(hashedPassword);
+        admin.setRole(UserRole.ADMIN);
         admin.setStatus(AdminStatus.PENDING_VERIFICATION);
         Admin savedAdmin = adminRepo.save(admin);
 

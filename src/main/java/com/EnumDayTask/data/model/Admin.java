@@ -1,6 +1,7 @@
 package com.EnumDayTask.data.model;
 
 import com.EnumDayTask.data.Enum.AdminStatus;
+import com.EnumDayTask.data.Enum.UserRole;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,7 @@ public class Admin implements UserDetails {
     private int failedLoginAttempts;
     private LocalDateTime lockoutTime;
     AdminStatus status;
+    UserRole role;
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
     private RefreshToken refreshToken;
 
