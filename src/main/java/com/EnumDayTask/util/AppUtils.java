@@ -23,7 +23,8 @@ public class AppUtils {
     public static final int MAX_FAILED_ATTEMPTS = 5;
     public static final int LOCKOUT_DURATION = 15;
     public static final String PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully";
-
+    public static final String NO_ADMIN_FOUND = "Admin not found";
+    public static final String INVALID_URL_FORMAT ="Invalid url format";
 
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     public static String hashPassword(String password){

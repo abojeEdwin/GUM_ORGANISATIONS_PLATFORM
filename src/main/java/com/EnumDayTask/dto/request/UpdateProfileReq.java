@@ -8,7 +8,10 @@ import lombok.Setter;
 @Setter
 public class UpdateProfileReq {
 
-
-
+    private String logoUrl;
+    private String description;
+    private String industry;
+    private String website;
+    private long adminId;
 
 }

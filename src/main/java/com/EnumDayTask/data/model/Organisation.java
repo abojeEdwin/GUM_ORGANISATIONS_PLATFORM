@@ -2,9 +2,7 @@ package com.EnumDayTask.data.model;
 
 
 import com.EnumDayTask.data.Enum.Plan_Limit;
-import com.EnumDayTask.data.Enum.ProfileCompleteness;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

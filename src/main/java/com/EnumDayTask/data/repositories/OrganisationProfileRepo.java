@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface OrganisationProfileRepo extends JpaRepository<OrganisationProfile, Long> {
 
     Optional<OrganisationProfile> findById(Long organisationId);
+    OrganisationProfile findByAdminId(Long adminId);
 
 }
