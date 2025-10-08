@@ -1,5 +1,6 @@
 package com.EnumDayTask.data.model;
 
+import com.EnumDayTask.data.Enum.AdminStatus;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -33,6 +34,7 @@ public class Admin implements UserDetails {
 
     private int failedLoginAttempts;
     private LocalDateTime lockoutTime;
+    AdminStatus status;
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference
@@ -44,7 +46,7 @@ public class Admin implements UserDetails {
     private Organisation organisation;
 
 
-    public void setAdminProfile(OrganisationProfile adminProfile) {
+    public void organisationProfile(OrganisationProfile adminProfile) {
         if (adminProfile == null) {
             if (this.adminProfile != null) {
                 this.adminProfile.setAdmin(null);

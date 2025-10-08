@@ -1,16 +1,15 @@
 package com.EnumDayTask.data.repositories;
 
+
 import com.EnumDayTask.data.model.Admin;
+import com.EnumDayTask.data.model.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface AdminRepo extends JpaRepository<Admin, Long> {
-
-    Optional<Admin> findByEmail(String email);
-    boolean existsByEmail(String email);
-    Optional<Admin> findById(long id);
-
+public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+    Optional<RefreshToken> findByToken(String token);
+    void deleteByAdmin(Admin admin);
 }

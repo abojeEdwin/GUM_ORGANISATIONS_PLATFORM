@@ -2,6 +2,7 @@ package com.EnumDayTask.data.model;
 
 
 import com.EnumDayTask.data.Enum.Plan_Limit;
+import com.EnumDayTask.data.Enum.ProfileCompleteness;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -25,14 +26,15 @@ public class Organisation {
     private String name;
     Plan_Limit planLimit;
 
-    @OneToOne(mappedBy = "organisation", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    private OrganisationProfile organisationProfile;
-
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")
     @JsonBackReference
     private Admin admin;
+
+    public Organisation(Admin admin) {
+        this.admin = admin;
+    }
+
 
 }

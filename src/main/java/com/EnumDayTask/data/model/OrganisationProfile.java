@@ -8,12 +8,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.sql.results.graph.Fetch;
+
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Org_Admin_Profile")
+@Table(name = "Org_Profile")
 @Getter
 @Setter
 public class OrganisationProfile {
@@ -39,12 +39,6 @@ public class OrganisationProfile {
             this.admin = admin;
         this.profileCompleteness = ProfileCompleteness.ZERO;
     }
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    @JoinColumn(name = "id")
-    @JsonBackReference
-    private Organisation organisation;
 
 
 
