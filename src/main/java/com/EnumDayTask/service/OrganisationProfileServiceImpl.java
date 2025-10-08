@@ -4,9 +4,7 @@ import com.EnumDayTask.data.Enum.ProfileCompleteness;
 import com.EnumDayTask.data.model.Admin;
 import com.EnumDayTask.data.model.Organisation;
 import com.EnumDayTask.data.model.OrganisationProfile;
-import com.EnumDayTask.data.repositories.AdminRepo;
-import com.EnumDayTask.data.repositories.OrganisationProfileRepo;
-import com.EnumDayTask.data.repositories.OrganisationRepo;
+import com.EnumDayTask.data.repositories.*;
 import com.EnumDayTask.dto.request.CreateOrganisationReq;
 import com.EnumDayTask.dto.request.UpdateOrganisationPlan;
 import com.EnumDayTask.dto.request.UpdateProfileReq;
@@ -33,16 +31,23 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
     private OrganisationRepo organisationRepo;
     @Autowired
     private AdminRepo adminRepo;
+    @Autowired
+    private BlackListedTokenRepo blacklistedTokenRepo;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    private VerificationTokenRepo verificationTokenRepository;
 
-    private static final Pattern URL_PATTERN = Pattern.compile(
-            "^(https?|ftp)://[\w\\d.-]+\\.[a-zA-Z]{2,6}(/[\\w\\d./?=#&%-]*)?$"
+    private static final Pattern URL_OR_IMAGE_PATTERN = Pattern.compile(
+            "^(https?|ftp)://[a-zA-Z0-9.-]+(:\\d+)?(/[a-zA-Z0-9@:%_\\+.~#?&/=\\-]*)?(\\.(jpg|jpeg|png|gif|bmp|webp|svg))?$",
+            Pattern.CASE_INSENSITIVE
     );
 
     private boolean isValidUrl(String url) {
         if (url == null || url.isEmpty()) {
             return false;
         }
-        return URL_PATTERN.matcher(url).matches();
+        return URL_OR_IMAGE_PATTERN.matcher(url).matches();
     }
 
 
@@ -140,5 +145,8 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
         organisationProfileRepo.deleteAll();
         organisationRepo.deleteAll();
         adminRepo.deleteAll();
+        verificationTokenRepository.deleteAll();
+        blacklistedTokenRepo.deleteAll();
+        refreshTokenRepository.deleteAll();
     }
 }

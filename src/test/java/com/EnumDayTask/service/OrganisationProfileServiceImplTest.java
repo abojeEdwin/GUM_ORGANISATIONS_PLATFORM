@@ -5,7 +5,6 @@ import com.EnumDayTask.data.Enum.Plan_Limit;
 import com.EnumDayTask.data.Enum.ProfileCompleteness;
 import com.EnumDayTask.data.model.Admin;
 import com.EnumDayTask.data.model.Organisation;
-import com.EnumDayTask.data.model.OrganisationProfile;
 import com.EnumDayTask.dto.request.AdminLoginReq;
 import com.EnumDayTask.dto.request.AdminSignupReq;
 import com.EnumDayTask.dto.request.CreateOrganisationReq;
@@ -108,7 +107,8 @@ class OrganisationProfileServiceImplTest {
         profile.setDescription("We deliver the best AI Agents");
         profile.setIndustry("Technology");
         profile.setWebsite("https://www.google.com");
-        profile.setLogoUrl("httpswwwgoogle.jpg");
+        profile.setLogoUrl("auctionpicture.jpg");
+        profile.setAdminId(verifiedAdmin.getId());
         ApiResponse savedProfile = organisationProfileService.updateProfile(profile);
         assertNotNull(savedProfile);
         assertEquals(savedProfile.getData(), verifiedAdmin.getId());
