@@ -17,7 +17,7 @@ public class RefreshToken {
     private long id;
 
     @OneToOne
-    @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false)
     private Admin admin;
 
     @Column(nullable = false, unique = true)

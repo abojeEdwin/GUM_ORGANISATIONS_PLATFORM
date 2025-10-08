@@ -73,7 +73,7 @@ class AdminAuthServiceImplTest {
         AdminLoginRes response = adminAuthService.login(loginReq);
         assertEquals(response.getMessage(), "Login successful");
         assertNotNull(response);
-        assertNotNull(response.getToken());
+        assertNotNull(response.getAccessToken());
     }
 
 

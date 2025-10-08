@@ -35,6 +35,8 @@ public class Admin implements UserDetails {
     private int failedLoginAttempts;
     private LocalDateTime lockoutTime;
     AdminStatus status;
+    @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, orphanRemoval = true)
+    private RefreshToken refreshToken;
 
     @OneToOne(mappedBy = "admin", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonManagedReference

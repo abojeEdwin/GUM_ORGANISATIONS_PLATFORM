@@ -1,12 +1,10 @@
 package com.EnumDayTask.service;
 
 import com.EnumDayTask.data.Enum.AdminStatus;
-import com.EnumDayTask.data.model.Admin;
-import com.EnumDayTask.data.model.Organisation;
-import com.EnumDayTask.data.model.OrganisationProfile;
-import com.EnumDayTask.data.model.VerificationToken;
+import com.EnumDayTask.data.model.*;
 import com.EnumDayTask.data.repositories.AdminRepo;
 import com.EnumDayTask.data.repositories.BlackListedTokenRepo;
+import com.EnumDayTask.data.repositories.RefreshTokenRepository;
 import com.EnumDayTask.data.repositories.VerificationTokenRepo;
 import com.EnumDayTask.dto.request.AdminLoginReq;
 import com.EnumDayTask.dto.request.AdminSignupReq;
@@ -15,6 +13,7 @@ import com.EnumDayTask.dto.response.AdminSignupRes;
 import com.EnumDayTask.exception.*;
 import com.EnumDayTask.util.AppUtils;
 import com.EnumDayTask.util.JwtUtil;
+import com.EnumDayTask.util.RefreshTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +38,10 @@ public class AdminAuthServiceImpl implements AdminAuthService {
     private JwtUtil jwtUtils;
     @Autowired
     private VerificationTokenRepo verificationTokenRepository;
+    @Autowired
+    private RefreshTokenService refreshTokenService;
+    @Autowired
+    private RefreshTokenRepository refreshTokenRepository;
 
 
     private void saveVerificationToken(Admin admin, String token) {
@@ -58,10 +61,10 @@ public class AdminAuthServiceImpl implements AdminAuthService {
             if (admin.getStatus() == AdminStatus.VERIFIED) {
                 throw new EMAIL_IN_USE(EMAIL_ALREADY_EXISTS);
             } else {
-                String token = jwtUtils.generateToken(admin);
-                saveVerificationToken(admin, token);
+                RefreshToken refreshToken = refreshTokenService.createRefreshToken(admin);
+                saveVerificationToken(admin, refreshToken.getToken());
                 AdminSignupRes response = new AdminSignupRes();
-                response.setToken(token);
+                response.setToken(refreshToken.getToken());
                 response.setMessage(VERIFICATION_RESENT);
                 return response;
             }
@@ -131,17 +134,24 @@ public class AdminAuthServiceImpl implements AdminAuthService {
         admin.setLockoutTime(null);
         adminRepo.save(admin);
 
-        String token = jwtUtils.generateToken(admin);
+
+        String accessToken = jwtUtils.generateToken(admin);
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(admin);
+
         AdminLoginRes response = new AdminLoginRes();
-        response.setToken(token);
+        response.setAccessToken(accessToken);
+        response.setRefreshToken(refreshToken.getToken());
         response.setMessage(LOGIN_SUCCESSFUL);
         return response;
     }
 
     @Override
     public void logout(String token) {
-
-
+        if (blacklistedTokenRepo.findByToken(token).isPresent()) {
+            throw new TOKEN_INVALID("Token has already been invalidated");}
+        BlackListedToken blacklistedToken = new BlackListedToken();
+        blacklistedToken.setToken(token);
+        blacklistedTokenRepo.save(blacklistedToken);
     }
 
     @Override
@@ -149,5 +159,6 @@ public class AdminAuthServiceImpl implements AdminAuthService {
         adminRepo.deleteAll();
         verificationTokenRepository.deleteAll();
         blacklistedTokenRepo.deleteAll();
+        refreshTokenRepository.deleteAll();
     }
 }
