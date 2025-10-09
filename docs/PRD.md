@@ -46,8 +46,11 @@ This document defines the requirements for the Authentication, Profile, Role Bas
     * GET  /v1/auth/verify?token= : Verify email
     * POST /v1/auth/login : Login
     * POST /v1/auth/logout : Logout
-    * GET /v1/org/me : Get organisation profile and completeness
-    * PUT /v1/org/me : Update organisation profile
+    * GET  /org/me : Get organisation profile and completeness
+    * POST /org/update-profile : Update organisation profile
+    * POST /org/create-organisation : Create organisation (Admin only)
+    * POST /org/view-organisation: View organisation plan
+    * POST /org/manage-organisation-plan : Manage organisation plan (Admin only)
     * POST /v1/org/invite : Invite user (Admin only)
     * GET /v1/org/members : List users (Admin and Manager)
     * POST /v1/org/create-program : Create program (Admin and Manager)
