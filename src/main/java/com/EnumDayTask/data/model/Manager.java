@@ -39,7 +39,7 @@ public class Manager implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return email;
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Optional;
 @RedisHash("Manager")
 public interface ManagerRepo extends JpaRepository<Manager, Long> {
 
-    Optional<Manager> findByEmail(String email);
+     Optional<Manager> findByEmail(String email);
     long countByAdmin(Admin admin);
-
+    boolean existsByEmail(String email);
 }

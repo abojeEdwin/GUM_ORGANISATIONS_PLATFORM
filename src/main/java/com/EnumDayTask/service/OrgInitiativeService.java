@@ -1,18 +1,16 @@
 package com.EnumDayTask.service;
 
-import com.EnumDayTask.data.model.Manager;
-import com.EnumDayTask.data.model.Member;
 import com.EnumDayTask.data.model.Program;
-import com.EnumDayTask.dto.request.ArchiveProgramRequest;
-import com.EnumDayTask.dto.request.CreateProgramRequest;
-import com.EnumDayTask.dto.request.InviteManagerRequest;
-import com.EnumDayTask.dto.request.UpdateProgramRequest;
+import com.EnumDayTask.dto.request.*;
+import com.EnumDayTask.dto.response.AcceptInviteResponse;
+import com.EnumDayTask.dto.response.InviteManagerResponse;
+import com.EnumDayTask.dto.response.InviteMemberResponse;
 
 public interface OrgInitiativeService {
 
-    Manager inviteManager(InviteManagerRequest request);
-    Member inviteMember(String email);
-    void acceptInvite(String token);
+    InviteManagerResponse inviteManager(InviteManagerRequest request);
+    InviteMemberResponse inviteMember(InviteMemberRequest request);
+    AcceptInviteResponse acceptInvite(AcceptInviteRequest request);
     Program createProgram(CreateProgramRequest request);
     Program updateProgram(UpdateProgramRequest request);
     Program archiveProgram(ArchiveProgramRequest request);

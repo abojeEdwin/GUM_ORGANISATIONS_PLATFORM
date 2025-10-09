@@ -14,6 +14,7 @@ import com.EnumDayTask.dto.request.CreateOrganisationReq;
 import com.EnumDayTask.dto.request.InviteManagerRequest;
 import com.EnumDayTask.dto.response.AdminLoginRes;
 import com.EnumDayTask.dto.response.AdminSignupRes;
+import com.EnumDayTask.dto.response.InviteManagerResponse;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,9 +77,10 @@ class OrgInitiativeServiceImplTest {
         assertEquals(orgResponse.getAdmin().getId(), verifiedAdmin.getId());
 
         InviteManagerRequest newManager = new InviteManagerRequest();
-        newManager.setEmail("newManager@email.com");
+        newManager.setEmail("abojeedwin@gmail.com");
         newManager.setAdminId(verifiedAdmin.getId());
-        Manager savedNewManager = orgInitiativeService.inviteManager(newManager);
+        InviteManagerResponse savedNewManager = orgInitiativeService.inviteManager(newManager);
         assertNotNull(savedNewManager);
+
     }
 }
