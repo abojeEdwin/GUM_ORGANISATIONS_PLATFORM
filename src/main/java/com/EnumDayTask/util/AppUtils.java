@@ -27,7 +27,7 @@ public class AppUtils {
     public static final String PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully";
     public static final String NO_ADMIN_FOUND = "Admin not found";
     public static final String INVALID_URL_FORMAT ="Invalid url format";
-
+    public static final String LIMIT_EXCEEDED_FOR_PLAN = "You have exceeded your plan limit, please upgrade";
 
     public static final Pattern URL_PATTERN = Pattern.compile(
             "^(https?|ftp)://[\\w.-]+\\.[a-zA-Z]{2,6}(/[\\w./?=#&%-]*)?$"

@@ -22,8 +22,6 @@ public class Program {
 
     private String title;
     private String description;
-    private String startDate;
-    private String endDate;
     ProgramStatus status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "organisation_id")

@@ -133,7 +133,7 @@ This document defines the requirements for the Authentication, Profile, Role Bas
     - RBAC
         Features :Roles(ADMIN,MANAGER,MEMBER)
         User Stories
-            * As an Admin, I want to be able to invitr members so my team can collaborate.
+            * As an Admin, I want to be able to invite members so my team can collaborate.
             * As a Manager, I want to be manage programs so i can run org initiatives.
             * As a Member, I want to be able to view/read and not write programs so i can stay updated.
 

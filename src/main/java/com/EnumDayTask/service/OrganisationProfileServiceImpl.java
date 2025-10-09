@@ -4,25 +4,26 @@ import com.EnumDayTask.data.Enum.ProfileCompleteness;
 import com.EnumDayTask.data.model.Admin;
 import com.EnumDayTask.data.model.Organisation;
 import com.EnumDayTask.data.model.OrganisationProfile;
-import com.EnumDayTask.data.repositories.*;
+import com.EnumDayTask.data.repositories.AdminRepo;
+import com.EnumDayTask.data.repositories.OrganisationProfileRepo;
+import com.EnumDayTask.data.repositories.OrganisationRepo;
 import com.EnumDayTask.dto.request.CreateOrganisationReq;
 import com.EnumDayTask.dto.request.UpdateOrganisationPlan;
 import com.EnumDayTask.dto.request.UpdateProfileReq;
 import com.EnumDayTask.dto.response.ApiResponse;
 import com.EnumDayTask.exception.ADMIN_NOT_FOUND;
 import com.EnumDayTask.exception.INVALID_URL;
-import com.EnumDayTask.exception.VALIDATION_ERROR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import static com.EnumDayTask.util.AppUtils.*;
 
-
 @Service
-public class OrganisationProfileServiceImpl implements OrganisationProfileService{
+public class OrganisationProfileServiceImpl implements OrganisationProfileService {
 
     @Autowired
     private OrganisationProfileRepo organisationProfileRepo;
@@ -30,19 +31,24 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
     private OrganisationRepo organisationRepo;
     @Autowired
     private AdminRepo adminRepo;
-    @Autowired
-    private BlackListedTokenRepo blacklistedTokenRepo;
-    @Autowired
-    private RefreshTokenRepository refreshTokenRepository;
-    @Autowired
-    private VerificationTokenRepo verificationTokenRepository;
 
+    private static final Pattern URL_PATTERN = Pattern.compile(
+            "^(https?|ftp)://[\\w\\d.-]+\\.[a-zA-Z]{2,6}(/[\\w\\d./?=#&%-]*)?$"
+    );
 
+    private boolean isValidUrl(String url) {
+        if (url == null || url.isEmpty()) {
+            return false;
+        }
+        return URL_PATTERN.matcher(url).matches();
+    }
 
     @Override
     public ApiResponse updateProfile(UpdateProfileReq request) {
         OrganisationProfile foundProfile = organisationProfileRepo.findByAdminId(request.getAdminId());
-        if(foundProfile == null){throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);}
+        if (foundProfile == null) {
+            throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);
+        }
         Admin managedAdmin = adminRepo.findById(request.getAdminId())
                 .orElseThrow(() -> new ADMIN_NOT_FOUND(NO_ADMIN_FOUND));
 
@@ -50,7 +56,7 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
             throw new INVALID_URL(INVALID_URL_FORMAT);
         }
         if (request.getWebsite() != null && !request.getWebsite().isEmpty() && !isValidUrl(request.getWebsite())) {
-            throw new VALIDATION_ERROR(INVALID_URL_FORMAT);
+            throw new INVALID_URL(INVALID_URL_FORMAT);
         }
 
         foundProfile.setLogoUrl(request.getLogoUrl());
@@ -62,10 +68,26 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
         List<String> missingFields = new ArrayList<>();
         int setFields = 0;
 
-        if (foundProfile.getLogoUrl() != null && !foundProfile.getLogoUrl().isEmpty()) setFields++; else missingFields.add("logoUrl");
-        if (foundProfile.getIndustry() != null && !foundProfile.getIndustry().isEmpty()) setFields++; else missingFields.add("industry");
-        if (foundProfile.getWebsite() != null && !foundProfile.getWebsite().isEmpty()) setFields++; else missingFields.add("website");
-        if (foundProfile.getDescription() != null && !foundProfile.getDescription().isEmpty()) setFields++; else missingFields.add("description");
+        if (foundProfile.getLogoUrl() != null && !foundProfile.getLogoUrl().isEmpty()) {
+            setFields++;
+        } else {
+            missingFields.add("logoUrl");
+        }
+        if (foundProfile.getIndustry() != null && !foundProfile.getIndustry().isEmpty()) {
+            setFields++;
+        } else {
+            missingFields.add("industry");
+        }
+        if (foundProfile.getWebsite() != null && !foundProfile.getWebsite().isEmpty()) {
+            setFields++;
+        } else {
+            missingFields.add("website");
+        }
+        if (foundProfile.getDescription() != null && !foundProfile.getDescription().isEmpty()) {
+            setFields++;
+        } else {
+            missingFields.add("description");
+        }
 
         ProfileCompleteness completeness;
         switch (setFields) {
@@ -85,7 +107,6 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
                 completeness = ProfileCompleteness.ZERO;
         }
         foundProfile.setProfileCompleteness(completeness);
-        foundProfile.setMissingFields(missingFields);
         OrganisationProfile savedProfile = organisationProfileRepo.save(foundProfile);
 
         ApiResponse response = new ApiResponse();
@@ -105,7 +126,9 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
     @Override
     public Organisation createOrganisation(CreateOrganisationReq request) {
         Organisation foundOrganisation = organisationRepo.findByAdminId(request.getAdminId());
-        if(foundOrganisation == null){throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);}
+        if (foundOrganisation == null) {
+            throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);
+        }
         Admin managedAdmin = adminRepo.findById(request.getAdminId())
                 .orElseThrow(() -> new ADMIN_NOT_FOUND(NO_ADMIN_FOUND));
         foundOrganisation.setName(request.getName());
@@ -117,7 +140,9 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
     @Override
     public Organisation manageOrganisationPlan(UpdateOrganisationPlan request) {
         Organisation foundOrganisation = organisationRepo.findByAdminId(request.getAdminId());
-        if(foundOrganisation == null){throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);}
+        if (foundOrganisation == null) {
+            throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);
+        }
         Admin managedAdmin = adminRepo.findById(request.getAdminId())
                 .orElseThrow(() -> new ADMIN_NOT_FOUND(NO_ADMIN_FOUND));
         foundOrganisation.setPlanLimit(request.getPlanLimit());
@@ -135,8 +160,5 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
         organisationProfileRepo.deleteAll();
         organisationRepo.deleteAll();
         adminRepo.deleteAll();
-        verificationTokenRepository.deleteAll();
-        blacklistedTokenRepo.deleteAll();
-        refreshTokenRepository.deleteAll();
     }
 }
