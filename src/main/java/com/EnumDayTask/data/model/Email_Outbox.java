@@ -28,5 +28,6 @@ public class Email_Outbox {
     private String body;
     private EmailWorker_Status email_status;
     private LocalDateTime createdAt;
+    private String errorMessage;
 
 }
