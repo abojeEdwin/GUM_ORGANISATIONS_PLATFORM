@@ -1,29 +1,33 @@
 package com.EnumDayTask.data.model;
 
 
-import com.EnumDayTask.data.Enum.Invite_Status;
 import com.EnumDayTask.data.Enum.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
+@Table(name="invite")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "manager")
-public class Manager {
+public class Invite {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    @Email
+
+    private String token;
     private String email;
     UserRole role;
-    Invite_Status status;
-    private String password;
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private Admin admin;
+    private long org_id;
+    LocalDateTime expires_at;
+    boolean isUsed;
 
 }

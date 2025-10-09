@@ -3,10 +3,7 @@ package com.EnumDayTask.data.model;
 
 import com.EnumDayTask.data.Enum.Invite_Status;
 import com.EnumDayTask.data.Enum.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,9 +23,10 @@ public class Member {
     @Email
     private String email;
     private String password;
-    private String organisationId;
+    @ManyToOne
+    @JoinColumn(name = "admin_id")
+    private Admin admin;
     UserRole role;
     Invite_Status status;
-    private String invitedBy;
 
 }

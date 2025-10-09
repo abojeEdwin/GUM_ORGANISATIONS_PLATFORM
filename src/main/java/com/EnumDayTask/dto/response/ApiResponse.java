@@ -20,7 +20,4 @@ public class ApiResponse{
     private List<String> missingFields;
     private ProfileCompleteness  profileCompleteness;
 
-    public void setMissingFields(List<String> missingFields) {
-        this.missingFields = missingFields;
-    }
 }
