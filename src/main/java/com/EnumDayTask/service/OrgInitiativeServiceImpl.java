@@ -171,23 +171,15 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
             managerRepo.save(manager);
         } else if (invite.getRole() == UserRole.MEMBER) {
             Member member = memberRepo.findByEmail(invite.getEmail())
-                    .orElseThrow(() -> new ENTITY_NOT_FOUND("Pending member not found"));
-            member.setPassword(passwordEncoder.encode(request.getPassword()));
+                    .orElseThrow(() -> new MEMBER_NOT_FOUND(MEMBER_NOT_FOUND));
+            member.setPassword(AppUtils.hashPassword(request.getPassword()));
             member.setStatus(Invite_Status.ACTIVE);
             memberRepo.save(member);
         }
-
-        // 8. Mark invite as used
         invite.setUsed(true);
-        invite.setAcceptedAt(LocalDateTime.now());
         inviteRepo.save(invite);
+        return new AcceptInviteResponse(INVITE_ACCEPTED_SUCCESSFULLY, invite.getEmail(), invite.getRole());
 
-        // 9. Return response
-        return new AcceptInviteResponse(
-                invite.getEmail(),
-                invite.getRole(),
-                "Invite accepted successfully"
-        );
     }
 
     @Override
