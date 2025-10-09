@@ -11,15 +11,14 @@ import com.EnumDayTask.dto.request.UpdateProfileReq;
 import com.EnumDayTask.dto.response.ApiResponse;
 import com.EnumDayTask.exception.ADMIN_NOT_FOUND;
 import com.EnumDayTask.exception.INVALID_URL;
+import com.EnumDayTask.exception.VALIDATION_ERROR;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 
-import static com.EnumDayTask.util.AppUtils.INVALID_URL_FORMAT;
-import static com.EnumDayTask.util.AppUtils.NO_ADMIN_FOUND;
+import static com.EnumDayTask.util.AppUtils.*;
 
 
 @Service
@@ -38,17 +37,6 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
     @Autowired
     private VerificationTokenRepo verificationTokenRepository;
 
-    private static final Pattern URL_OR_IMAGE_PATTERN = Pattern.compile(
-            "^(https?|ftp)://[a-zA-Z0-9.-]+(:\\d+)?(/[a-zA-Z0-9@:%_\\+.~#?&/=\\-]*)?(\\.(jpg|jpeg|png|gif|bmp|webp|svg))?$",
-            Pattern.CASE_INSENSITIVE
-    );
-
-    private boolean isValidUrl(String url) {
-        if (url == null || url.isEmpty()) {
-            return false;
-        }
-        return URL_OR_IMAGE_PATTERN.matcher(url).matches();
-    }
 
 
     @Override
@@ -58,11 +46,11 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
         Admin managedAdmin = adminRepo.findById(request.getAdminId())
                 .orElseThrow(() -> new ADMIN_NOT_FOUND(NO_ADMIN_FOUND));
 
-        if (request.getLogoUrl() != null && !isValidUrl(request.getLogoUrl())) {
+        if (request.getLogoUrl() != null && !request.getLogoUrl().isEmpty() && !isValidUrl(request.getLogoUrl())) {
             throw new INVALID_URL(INVALID_URL_FORMAT);
         }
-        if (request.getWebsite() != null && !isValidUrl(request.getWebsite())) {
-            throw new INVALID_URL(INVALID_URL_FORMAT);
+        if (request.getWebsite() != null && !request.getWebsite().isEmpty() && !isValidUrl(request.getWebsite())) {
+            throw new VALIDATION_ERROR(INVALID_URL_FORMAT);
         }
 
         foundProfile.setLogoUrl(request.getLogoUrl());
@@ -97,12 +85,14 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
                 completeness = ProfileCompleteness.ZERO;
         }
         foundProfile.setProfileCompleteness(completeness);
-        organisationProfileRepo.save(foundProfile);
+        foundProfile.setMissingFields(missingFields);
+        OrganisationProfile savedProfile = organisationProfileRepo.save(foundProfile);
 
         ApiResponse response = new ApiResponse();
-        response.setMessage("Profile updated successfully");
-        response.setData(foundProfile);
+        response.setMessage(PROFILE_UPDATED_SUCCESSFULLY);
+        response.setData(savedProfile);
         response.setMissingFields(missingFields);
+        response.setProfileCompleteness(completeness);
 
         return response;
     }

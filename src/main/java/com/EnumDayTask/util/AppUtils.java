@@ -3,6 +3,8 @@ package com.EnumDayTask.util;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 public class AppUtils {
 
@@ -25,6 +27,19 @@ public class AppUtils {
     public static final String PROFILE_UPDATED_SUCCESSFULLY = "Profile updated successfully";
     public static final String NO_ADMIN_FOUND = "Admin not found";
     public static final String INVALID_URL_FORMAT ="Invalid url format";
+
+
+    public static final Pattern URL_PATTERN = Pattern.compile(
+            "^(https?|ftp)://[\\w.-]+\\.[a-zA-Z]{2,6}(/[\\w./?=#&%-]*)?$"
+    );
+
+    public static boolean isValidUrl(String url) {
+        if (url == null || url.isEmpty()) {
+            return false;
+        }
+        return URL_PATTERN.matcher(url).matches();
+    }
+
 
     private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     public static String hashPassword(String password){

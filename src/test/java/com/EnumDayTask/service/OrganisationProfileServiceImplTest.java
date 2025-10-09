@@ -107,12 +107,13 @@ class OrganisationProfileServiceImplTest {
         profile.setDescription("We deliver the best AI Agents");
         profile.setIndustry("Technology");
         profile.setWebsite("https://www.google.com");
-        profile.setLogoUrl("auctionpicture.jpg");
+        profile.setLogoUrl("https://images.site.com/photo.jpg");
         profile.setAdminId(verifiedAdmin.getId());
         ApiResponse savedProfile = organisationProfileService.updateProfile(profile);
         assertNotNull(savedProfile);
-        assertEquals(savedProfile.getData(), verifiedAdmin.getId());
         assertEquals(savedProfile.getProfileCompleteness(), ProfileCompleteness.HUNDRED);
+        System.out.println(savedProfile.getMissingFields());
+
 
     }
 

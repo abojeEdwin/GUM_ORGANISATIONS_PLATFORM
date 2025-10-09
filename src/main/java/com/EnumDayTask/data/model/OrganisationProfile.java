@@ -9,6 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 
 @Entity
 @AllArgsConstructor
@@ -34,6 +36,7 @@ public class OrganisationProfile {
     private String industry;
     private String website;
     private ProfileCompleteness profileCompleteness;
+    private List<String> missingFields;
 
      public OrganisationProfile(Admin admin) {
             this.admin = admin;
