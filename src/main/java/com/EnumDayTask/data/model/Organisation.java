@@ -9,6 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -29,6 +32,9 @@ public class Organisation {
     @JoinColumn(name = "id")
     @JsonBackReference
     private Admin admin;
+
+    @OneToMany(mappedBy = "organisation", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Program> programs = new ArrayList<>();
 
     public Organisation(Admin admin) {
         this.admin = admin;

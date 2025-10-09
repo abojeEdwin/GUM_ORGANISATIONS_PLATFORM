@@ -25,6 +25,8 @@ public class Program {
     private String startDate;
     private String endDate;
     ProgramStatus status;
-    private long organisationId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "organisation_id")
+    private Organisation organisation;
 
 }
