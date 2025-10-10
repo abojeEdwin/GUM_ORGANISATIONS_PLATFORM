@@ -1,9 +1,6 @@
 package com.EnumDayTask.service;
 
-import com.EnumDayTask.data.Enum.EmailWorker_Status;
-import com.EnumDayTask.data.Enum.Invite_Status;
-import com.EnumDayTask.data.Enum.Plan_Limit;
-import com.EnumDayTask.data.Enum.UserRole;
+import com.EnumDayTask.data.Enum.*;
 import com.EnumDayTask.data.model.*;
 import com.EnumDayTask.data.repositories.*;
 import com.EnumDayTask.dto.request.*;
@@ -15,6 +12,7 @@ import com.EnumDayTask.util.AppUtils;
 import com.EnumDayTask.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -40,6 +38,10 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
     private InviteRepo inviteRepo;
     @Autowired
     private EmailOutboxRepo emailOutboxRepo;
+    @Autowired
+    private BlackListedTokenRepo blackListedTokenRepo;
+    @Autowired
+    private ProgramRepo programRepo;
 
     @Override
     public InviteManagerResponse inviteManager(InviteManagerRequest request) {
@@ -90,7 +92,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         newEmail.setBody(savedInvite.getToken());
         newEmail.setCreatedAt(LocalDateTime.now());
         Email_Outbox savedEmail = emailOutboxRepo.save(newEmail);
-        return new InviteManagerResponse(savedInvite.getToken(),savedManager.getEmail(),admin.getId());
+        return new InviteManagerResponse(savedInvite.getToken(),savedManager.getEmail(),admin.getId(),savedManager.getId());
 
     }
 
@@ -174,6 +176,9 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
             member.setStatus(Invite_Status.ACTIVE);
             memberRepo.save(member);
         }
+        BlackListedToken blackListedToken = new BlackListedToken();
+        blackListedToken.setToken(request.getToken());
+        blackListedTokenRepo.save(blackListedToken);
         invite.setUsed(true);
         inviteRepo.save(invite);
         return new AcceptInviteResponse(INVITE_ACCEPTED_SUCCESSFULLY, invite.getEmail(), invite.getRole());
@@ -181,8 +186,38 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
     }
 
     @Override
+    @Transactional
     public Program createProgram(CreateProgramRequest request) {
-        return null;
+        Admin foundAdmin = adminRepo.findById(request.getAdminId())
+                .orElseThrow(() -> new INVALID_CREDENTIAL(INVALID_CREDENTIALS));
+
+        //if(managerRepo.existsById(request.getManagerId())){throw new EMAIL_IN_USE(EMAIL_ALREADY_EXISTS);}
+        Organisation foundOrganisation = organisationRepo.findByAdminId(request.getAdminId());
+        if(foundOrganisation == null){throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);}
+
+        long numberOfPrograms = foundOrganisation.getPrograms().size();
+        Plan_Limit plan = foundOrganisation.getPlanLimit();
+
+        boolean limitExceeded = false;
+        if (plan == Plan_Limit.FREE && numberOfPrograms >= 3) {
+            limitExceeded = true;
+        } else if (plan == Plan_Limit.PRO && numberOfPrograms >= 20) {
+            limitExceeded = true;
+        } else if (plan == Plan_Limit.UNLIMITED){
+            limitExceeded = false;
+        }
+        if (limitExceeded) {
+            throw new LIMIT_EXCEEDED(LIMIT_EXCEEDED_FOR_PLAN);
+        }
+
+        Program program = new Program();
+        program.setDescription(request.getDescription());
+        program.setTitle(request.getTitle());
+        program.setStatus(ProgramStatus.ACTIVE);
+        program.setOrganisation(foundOrganisation);
+        Program savedProgram = programRepo.save(program);
+
+        return savedProgram;
     }
 
     @Override
@@ -204,6 +239,8 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         organisationProfileRepo.deleteAll();
         emailOutboxRepo.deleteAll();
         inviteRepo.deleteAll();
+        programRepo.deleteAll();
+        blackListedTokenRepo.deleteAll();
     }
 
 

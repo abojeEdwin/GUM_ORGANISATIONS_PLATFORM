@@ -15,4 +15,5 @@ public class InviteManagerResponse {
     private String token;
     private String managerEmail;
     private long adminId;
+    private long managerId;
 }
