@@ -191,7 +191,6 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         Admin foundAdmin = adminRepo.findById(request.getAdminId())
                 .orElseThrow(() -> new INVALID_CREDENTIAL(INVALID_CREDENTIALS));
 
-        //if(managerRepo.existsById(request.getManagerId())){throw new EMAIL_IN_USE(EMAIL_ALREADY_EXISTS);}
         Organisation foundOrganisation = organisationRepo.findByAdminId(request.getAdminId());
         if(foundOrganisation == null){throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);}
 
@@ -222,6 +221,14 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
 
     @Override
     public Program updateProgram(UpdateProgramRequest request) {
+        Admin foundAdmin = adminRepo.findById(request.getAdminId())
+                .orElseThrow(() -> new INVALID_CREDENTIAL(INVALID_CREDENTIALS));
+
+        Organisation foundOrganisation = organisationRepo.findByAdminId(request.getOrganisationId());
+        if(foundOrganisation == null){throw new ADMIN_NOT_FOUND(NO_ADMIN_FOUND);}
+        Manager foundManager = managerRepo.findById(request.getManagerId()).orElseThrow(() -> new MANAGER_NOT_FOUND(MANAGER_NOT_FOUND));
+
+
         return null;
     }
 
