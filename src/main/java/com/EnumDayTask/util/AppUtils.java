@@ -33,6 +33,7 @@ public class AppUtils {
     public static final String MANAGER_NOT_FOUND = "Manager not found";
     public static final String MEMBER_NOT_FOUND = "Member not found";
     public static final String INVITE_ACCEPTED_SUCCESSFULLY = "Invite accepted successfully";
+    public static final String PROGRAM_NOT_FOUND = "Program not found";
 
 
     public static final Pattern URL_PATTERN = Pattern.compile(

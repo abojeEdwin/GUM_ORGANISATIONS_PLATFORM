@@ -13,5 +13,6 @@ public class UpdateProgramRequest {
     private long adminId;
     private long managerId;
     private long organisationId;
+    private long programId;
 
 }
