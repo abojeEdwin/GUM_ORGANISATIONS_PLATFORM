@@ -32,17 +32,6 @@ public class OrganisationProfileServiceImpl implements OrganisationProfileServic
     @Autowired
     private AdminRepo adminRepo;
 
-    private static final Pattern URL_PATTERN = Pattern.compile(
-            "^(https?|ftp)://[\\w\\d.-]+\\.[a-zA-Z]{2,6}(/[\\w\\d./?=#&%-]*)?$"
-    );
-
-    private boolean isValidUrl(String url) {
-        if (url == null || url.isEmpty()) {
-            return false;
-        }
-        return URL_PATTERN.matcher(url).matches();
-    }
-
     @Override
     public ApiResponse updateProfile(UpdateProfileReq request) {
         OrganisationProfile foundProfile = organisationProfileRepo.findByAdminId(request.getAdminId());
