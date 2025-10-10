@@ -224,7 +224,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         Admin foundAdmin = adminRepo.findById(request.getAdminId())
                 .orElseThrow(() -> new INVALID_CREDENTIAL(INVALID_CREDENTIALS));
 
-        Organisation foundOrganisation = organisationRepo.findByAdminId(request.getOrganisationId());
+        Organisation foundOrganisation = organisationRepo.findById(request.getOrganisationId()).orElseThrow(() -> new ORG_NOT_FOUND(ORGANISATION_NOT_FOUND));
         if(foundOrganisation == null){throw new ORG_NOT_FOUND(ORGANISATION_NOT_FOUND);}
         Manager foundManager = managerRepo.findById(request.getManagerId()).orElseThrow(() -> new MANAGER_NOT_FOUND(MANAGER_NOT_FOUND));
         Program foundProgram = programRepo.findById(request.getProgramId());
