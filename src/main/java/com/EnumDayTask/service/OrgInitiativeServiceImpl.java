@@ -228,7 +228,28 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         if(foundOrganisation == null){throw new ORG_NOT_FOUND(ORGANISATION_NOT_FOUND);}
         Manager foundManager = managerRepo.findById(request.getManagerId()).orElseThrow(() -> new MANAGER_NOT_FOUND(MANAGER_NOT_FOUND));
         Program foundProgram = programRepo.findById(request.getProgramId());
-        if(foundProgram == null){ throw new PROGRAM_NOT_FOUND(PROGRAM_NOT_FOUND);)}
+        if(foundProgram == null){ throw new PROGRAM_NOT_FOUND(PROGRAM_NOT_FOUND);}
+
+        long numberOfPrograms = foundOrganisation.getPrograms().size();
+        Plan_Limit plan = foundOrganisation.getPlanLimit();
+
+        boolean limitExceeded = false;
+        if (plan == Plan_Limit.FREE && numberOfPrograms >= 3) {
+            limitExceeded = true;
+        } else if (plan == Plan_Limit.PRO && numberOfPrograms >= 20) {
+            limitExceeded = true;
+        } else if (plan == Plan_Limit.UNLIMITED){
+            limitExceeded = false;
+        }
+        if (limitExceeded) {
+            throw new LIMIT_EXCEEDED(LIMIT_EXCEEDED_FOR_PLAN);
+        }
+
+        foundProgram.setTitle(request.getTitle());
+        foundProgram.setDescription(request.getDescription());
+        foundProgram.setStatus(ProgramStatus.ACTIVE);
+        foundProgram.setOrganisation(foundOrganisation);
+        foundProgram = programRepo.save(foundProgram);
 
 
 
@@ -237,6 +258,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
 
     @Override
     public Program archiveProgram(ArchiveProgramRequest request) {
+
         return null;
     }
 
