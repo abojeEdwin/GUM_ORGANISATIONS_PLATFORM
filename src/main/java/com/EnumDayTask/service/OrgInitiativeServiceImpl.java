@@ -83,7 +83,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         Invite savedInvite = inviteRepo.save(newInvite);
 
         Email_Outbox newEmail = new Email_Outbox();
-        newEmail.setEmail_status(EmailWorker_Status.PENDING);
+        newEmail.setStatus(EmailWorker_Status.PENDING);
         newEmail.setRecipient(savedInvite.getEmail());
         newEmail.setSender(admin.getEmail());
         newEmail.setSubject("Invite Manager");
@@ -136,7 +136,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         Invite savedInvite = inviteRepo.save(newInvite);
 
         Email_Outbox newEmail = new Email_Outbox();
-        newEmail.setEmail_status(EmailWorker_Status.PENDING);
+        newEmail.setStatus(EmailWorker_Status.PENDING);
         newEmail.setRecipient(savedInvite.getEmail());
         newEmail.setSender(foundAdmin.getEmail());
         newEmail.setSubject("Invite Manager");
@@ -149,7 +149,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
     @Override
     public AcceptInviteResponse acceptInvite(AcceptInviteRequest request) {
 
-        if (!jwtUtil.isTokenExpired(request.getToken())) {
+        if (jwtUtil.isTokenExpired(request.getToken())) {
             throw new TOKEN_EXPIRED(TOKEN_INVALID);
         }
         Invite invite = inviteRepo.findByToken(request.getToken())
@@ -157,8 +157,6 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         if (invite.getExpires_at() != null && invite.getExpires_at().isBefore(LocalDateTime.now())) {
             throw new INVITE_EXPIRED(INVITE_ALREADY_EXPIRED);}
         if (invite.isUsed()) {throw new TOKEN_ALREADY_USED(TOKEN_ALREADY_USED);}
-        if (managerRepo.existsByEmail(invite.getEmail()) || memberRepo.existsByEmail(invite.getEmail())) {
-            throw new EMAIL_IN_USE(EMAIL_ALREADY_EXISTS);}
 
         Organisation org = organisationRepo.findById(invite.getOrg_id())
                 .orElseThrow(() -> new ORG_NOT_FOUND(ORGANISATION_NOT_FOUND));

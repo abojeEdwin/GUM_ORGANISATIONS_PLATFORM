@@ -20,17 +20,17 @@ public class EmailOutboxWorker {
     @Transactional
     @Scheduled(fixedDelay = 10000)
     public void processPendingEmails() {
-        List<Email_Outbox> pendingEmails = emailOutboxRepo.findByEmailStatus(EmailWorker_Status.PENDING);
+        List<Email_Outbox> pendingEmails = emailOutboxRepo.findByStatus(EmailWorker_Status.PENDING);
 
         for (Email_Outbox email : pendingEmails) {
             try {
                 sendEmail(email);
-                email.setEmail_status(EmailWorker_Status.SENT);
+                email.setStatus(EmailWorker_Status.SENT);
                 emailOutboxRepo.save(email);
                 System.out.println("Email sent successfully to " + email.getRecipient());
 
             } catch (Exception e) {
-                email.setEmail_status(EmailWorker_Status.FAILED);
+                email.setStatus(EmailWorker_Status.FAILED);
                 email.setErrorMessage(e.getMessage());
                 emailOutboxRepo.save(email);
                 System.err.println("Failed to send email to " + email.getRecipient() + ": " + e.getMessage());

@@ -8,10 +8,8 @@ import com.EnumDayTask.data.model.Admin;
 import com.EnumDayTask.data.model.Invite;
 import com.EnumDayTask.data.model.Manager;
 import com.EnumDayTask.data.model.Organisation;
-import com.EnumDayTask.dto.request.AdminLoginReq;
-import com.EnumDayTask.dto.request.AdminSignupReq;
-import com.EnumDayTask.dto.request.CreateOrganisationReq;
-import com.EnumDayTask.dto.request.InviteManagerRequest;
+import com.EnumDayTask.dto.request.*;
+import com.EnumDayTask.dto.response.AcceptInviteResponse;
 import com.EnumDayTask.dto.response.AdminLoginRes;
 import com.EnumDayTask.dto.response.AdminSignupRes;
 import com.EnumDayTask.dto.response.InviteManagerResponse;
@@ -81,6 +79,53 @@ class OrgInitiativeServiceImplTest {
         newManager.setAdminId(verifiedAdmin.getId());
         InviteManagerResponse savedNewManager = orgInitiativeService.inviteManager(newManager);
         assertNotNull(savedNewManager);
+
+    }
+
+    @Test
+    public void testManagerCanAcceptInviteRequest(){
+        AdminSignupReq admin = new AdminSignupReq();
+        admin.setEmail("abojeedwin@gmail.com");
+        admin.setPassword("SecurePassword123!");
+        AdminSignupRes res = adminAuthService.signup(admin);
+        assertNotNull(res);
+        assertEquals(res.getMessage(), "Account created successfully");
+
+        Admin verifiedAdmin = adminAuthService.verifyEmail(res.getToken());
+        assertNotNull(verifiedAdmin);
+        assertEquals(AdminStatus.VERIFIED , verifiedAdmin.getStatus());
+
+        AdminLoginReq loginReq = new AdminLoginReq();
+        loginReq.setEmail(verifiedAdmin.getEmail());
+        loginReq.setPassword("SecurePassword123!");
+        AdminLoginRes response = adminAuthService.login(loginReq);
+        assertEquals(response.getMessage(), "Login successful");
+        assertNotNull(response);
+        assertNotNull(response.getAccessToken());
+
+        CreateOrganisationReq organisation = new CreateOrganisationReq();
+        organisation.setName("Semicolon");
+        organisation.setPlanLimit(Plan_Limit.FREE);
+        organisation.setAdminId(verifiedAdmin.getId());
+        Organisation orgResponse = organisationProfileService.createOrganisation(organisation);
+        assertNotNull(orgResponse);
+        assertEquals(orgResponse.getName(), "Semicolon");
+        assertEquals(orgResponse.getPlanLimit(), Plan_Limit.FREE);
+        assertEquals(orgResponse.getAdmin().getId(), verifiedAdmin.getId());
+
+        InviteManagerRequest newManager = new InviteManagerRequest();
+        newManager.setEmail("abojechoko@gmail.com");
+        newManager.setAdminId(verifiedAdmin.getId());
+        InviteManagerResponse savedNewManager = orgInitiativeService.inviteManager(newManager);
+        assertNotNull(savedNewManager);
+
+        AcceptInviteRequest acceptInviteRequest = new AcceptInviteRequest();
+        acceptInviteRequest.setPassword("SecurePassword123!");
+        acceptInviteRequest.setToken(savedNewManager.getToken());
+        AcceptInviteResponse acceptInviteResponse = orgInitiativeService.acceptInvite(acceptInviteRequest);
+        assertEquals(acceptInviteResponse.getMessage(), "Invite accepted successfully");
+        assertEquals(acceptInviteResponse.getRole(), UserRole.MANAGER);
+        assertEquals(acceptInviteResponse.getEmail(), "abojechoko@gmail.com");
 
     }
 }
