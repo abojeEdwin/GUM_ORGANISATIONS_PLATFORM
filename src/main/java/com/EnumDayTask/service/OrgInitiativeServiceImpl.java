@@ -250,10 +250,7 @@ public class OrgInitiativeServiceImpl implements  OrgInitiativeService{
         foundProgram.setStatus(ProgramStatus.ACTIVE);
         foundProgram.setOrganisation(foundOrganisation);
         foundProgram = programRepo.save(foundProgram);
-
-
-
-        return null;
+        return foundProgram;
     }
 
     @Override
